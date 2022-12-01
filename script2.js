@@ -12,6 +12,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole-boucles-comptage&q=&sort=boucle_num&facet=boucle_num&facet=libelle&rows=200")
     .then((resp) => resp.json())
     .then(data => {
+        console.log(data)
         let long = []
         let lat = []
         for (i=0 ; i<data.records.length ; i++) {
@@ -30,7 +31,7 @@ const graph = document.getElementById('myChart2');
 
 // récup API nombr passages / tranfo des réponses en json / récupération data dans des tableaux vides
 // boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
-fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b&rows=200")
+fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&rows=200&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=jour_de_la_semaine")
     .then((resp) => resp.json())
     .then(data => {
         console.log(data)
