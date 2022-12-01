@@ -68,7 +68,7 @@ fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404
         const countPerDay = [];
 
         for (i=0; i<data.records.length; i++ ){
-            if(data['records'][i]['fields']['total'] > 2250){
+            if(data['records'][i]['fields']['total'] > 1500){
                 counterName.push(data['records'][i]['fields']['libelle']);
                 countPerDay.push(data['records'][i]['fields']['total'])
             }
@@ -84,7 +84,7 @@ fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404
                     label:'Nombre de passages de vélo par compteur et par jour',
                     data: countPerDay,
                     borderWidth: 1,
-                    backgroundColor: 'green'
+                    backgroundColor: 'red'
                 }]
             },
             options:{
