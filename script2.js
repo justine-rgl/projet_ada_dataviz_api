@@ -26,12 +26,14 @@ fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=24440040
 
 // lien avec html pour emplacement graph
 const ctx = document.getElementById('myChart');
+const graph = document.getElementById('myChart2');
 
 // récup API nombr passages / tranfo des réponses en json / récupération data dans des tableaux vides
 // boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
-fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b")
+fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b&rows=200")
     .then((resp) => resp.json())
     .then(data => {
+        console.log(data)
         const years=[]
         const count=[]       
         for (i=0 ; i<data.facet_groups[2].facets.length ; i++) {
@@ -60,5 +62,34 @@ fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404
                     }
                 }
             }
+        })
+        
+        const counterName = [];
+        const countPerDay = [];
+
+        for (i=0; i<data.records.length; i++ ){
+            if(data['records'][i]['fields']['total'] > 2250){
+                counterName.push(data['records'][i]['fields']['libelle']);
+                countPerDay.push(data['records'][i]['fields']['total'])
+            }
+        }
+        console.log(counterName)
+        console.log(countPerDay)
+        
+        new Chart(graph, {
+            type: 'bar',
+            data: {
+                labels: counterName,
+                datasets:[{
+                    label:'Nombre de passages de vélo par compteur et par jour',
+                    data: countPerDay,
+                    borderWidth: 1,
+                    backgroundColor: 'green'
+                }]
+            },
+            options:{
+                indexAxis: 'y'
+            }
+
         })
     });
