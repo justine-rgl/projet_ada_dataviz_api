@@ -21,15 +21,15 @@ const globalCounter = [];
 
 // récup API bornes / tranfo des réponses en json / récupération data dans des tableaux vides
 // boucle pour récupérer les coordonnées des pins / push data dans les tableaux vides en suivant le path d'accès
-fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole-boucles-comptage&q=&sort=boucle_num&facet=boucle_num&facet=libelle&rows=200")
+fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole-boucles-comptage&q=&rows=100&sort=boucle_num&facet=boucle_num&facet=libelle&apikey=c029c3d658c1b2b76334997b7cf8798eb391e6f966c87274ad981057")
     .then((resp) => resp.json())
     .then(data => {
-        //console.log(data)
+       console.log(data)
         const long = [];
         const lat = [];
         ;
         
-        for (i=0 ; i<data.records.length ; i++) {
+        for (i=0 ; i<data['records'].length ; i++) {
             long.push(data['records'][i]['fields']['geolocalisation'][0])
             lat.push(data['records'][i]['fields']['geolocalisation'][1])
             globalCounter.push(data['records'][i]['fields'])
@@ -46,15 +46,16 @@ fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=24440040
 // lien avec html pour emplacement graph
 const ctx = document.getElementById('myChart');
 const graph = document.getElementById('myChart2');
+const graphParHeure = document.getElementById('myChart3');
 
 // récup API nombr passages / tranfo des réponses en json / récupération data dans des tableaux vides
 // boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
 function bikeCount(){
-    fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&rows=200&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=jour_de_la_semaine")
+    fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&rows=100&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b&apikey=c029c3d658c1b2b76334997b7cf8798eb391e6f966c87274ad981057")
         .then((resp) => resp.json())
         .then(data => {
-        //console.log(data)
-        const years=[]
+        console.log(data)
+        /*const years=[]
         const count=[]       
         for (i=0 ; i<data.facet_groups[2].facets.length ; i++) {
             years.push(data['facet_groups'][2]['facets'][i]['name'])
@@ -62,7 +63,7 @@ function bikeCount(){
         }
 
         // paramétrage du graph
-        /*new Chart(ctx, {
+        new Chart(ctx, {
             // choix du type de graph
             type: 'bar',
             // récupération des data à intégrer (abscisse, ordonnée, données des tableaux "years" et "count", etc.)
@@ -95,8 +96,8 @@ function bikeCount(){
 
             }
         }
-        //console.log(counterName)
-        //console.log(countPerDay)
+        console.log(counterName)
+        console.log(countPerDay)
         
         new Chart(graph, {
             type: 'bar',
@@ -117,7 +118,7 @@ function bikeCount(){
         const longMostCounter = [];
         const latMostCounter = [];
         const counterLibelle = [];
-        console.log(globalCounter)
+        //console.log(globalCounter)
         for (i=0 ; i<counterName.length; i++){
             //console.log(counterName[i])
             for (j=0 ; j<globalCounter.length; j++){ 
@@ -135,8 +136,43 @@ function bikeCount(){
         //console.log(latMostCounter)
         for (i=0 ; i<longMostCounter.length ; i++) {
             L.marker([longMostCounter[i], latMostCounter[i]], {icon: greenIcon}).addTo(map).bindPopup(counterLibelle[i]).openPopup();
-            L.marker([47.2083580489973, -1.5497189172153978], {icon: greenIcon}).addTo(map).bindPopup("Pont Audibert vers Sud").openPopup();
+            //L.marker([47.2083580489973, -1.5497189172153978], {icon: greenIcon}).addTo(map).bindPopup("Pont Audibert vers Sud").openPopup();
         }
+
+        // création graphe passage vélo par heure
+        const heures = ["0h-1h", "1h-2h", "2h-3h", "3h-4h", "4h-5h", "5h-6h", "6h-7h", "7h-8h", "8h-9h", "9h-10h", "10h-11h", "11H-12h", "12h-13h", "13h-14h", "14h-15h", "15h-16h", "16h-17h", "17h-18h", "18h-19h", "19h-20h", "20h-21h", "21h-22h", "22h-23h", "23h-0h"]
+        const totalParHeure = [];
+
+        let total0h = 0
+        
+        for (i=0 ; i< 58 ; i++){
+            total0h += data['records'][i]['fields']['00'] 
+            console.log(parseInt(total0h))
+        }
+    
+    
+        
+        
+        /*new Chart(graphParHeure, {
+            type: "bar",
+            data: {
+                labels: heures,
+                datasets: [{
+                    label: 'Nombre de passages de vélos par heure',
+                    data: totalParHeure,
+                    borderWidth: 1
+                }]
+            },
+            
+            options: {
+                scales:{
+                    y: {
+                        beginAtZero: true 
+                    }
+                }
+            }
+        })*/
+
 
     })
 }
