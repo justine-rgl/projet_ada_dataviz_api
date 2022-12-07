@@ -96,8 +96,8 @@ function bikeCount(){
 
             }
         }
-        console.log(counterName)
-        console.log(countPerDay)
+        //console.log(counterName)
+        //console.log(countPerDay)
         
         new Chart(graph, {
             type: 'bar',
@@ -144,34 +144,86 @@ function bikeCount(){
         const totalParHeure = [];
 
         let total0h = 0
+        let total1h = 0
+        let total2h = 0
+        let total3h = 0
+        let total4h = 0
+        let total5h = 0
+        let total6h = 0
+        let total7h = 0
+        let total8h = 0
+        let total9h = 0
+        let total10h = 0
+        let total11h = 0
+        let total12h = 0
+        let total13h = 0
+        let total14h = 0
+        let total15h = 0
+        let total16h = 0
+        let total17h = 0
+        let total18h = 0
+        let total19h = 0
+        let total20h = 0
+        let total21h = 0
+        let total22h = 0
+        let total23h = 0      
         
-        for (i=0 ; i< 58 ; i++){
-            total0h += data['records'][i]['fields']['00'] 
-            console.log(parseInt(total0h))
+        for (i=0 ; i< data.records.length ; i++){
+            if (data['records'][i]['fields']['00', '01', '02','03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] != undefined){
+                total0h += data['records'][i]['fields']['00'] 
+                total1h += data['records'][i]['fields']['01']
+                total2h += data['records'][i]['fields']['02']
+                total3h += data['records'][i]['fields']['03']
+                total4h += data['records'][i]['fields']['04']
+                total5h += data['records'][i]['fields']['05']
+                total6h += data['records'][i]['fields']['06']
+                total7h += data['records'][i]['fields']['07']
+                total8h += data['records'][i]['fields']['08']
+                total9h += data['records'][i]['fields']['09']
+                total10h += data['records'][i]['fields']['10']
+                total11h += data['records'][i]['fields']['11']
+                total12h += data['records'][i]['fields']['12']
+                total13h += data['records'][i]['fields']['13']
+                total14h += data['records'][i]['fields']['14']
+                total15h += data['records'][i]['fields']['15']
+                total16h += data['records'][i]['fields']['16']
+                total17h += data['records'][i]['fields']['17']
+                total18h += data['records'][i]['fields']['18']
+                total19h += data['records'][i]['fields']['19']
+                total20h += data['records'][i]['fields']['20']
+                total21h += data['records'][i]['fields']['21']
+                total22h += data['records'][i]['fields']['22']
+                total23h += data['records'][i]['fields']['23']
+            }
         }
-    
+        totalParHeure.push(total0h, total1h, total2h, total3h, total4h, total5h, total6h, total7h, total8h, total9h, total10h, total11h, total12h, total13h, total14h, total15h, total16h, total17h, total18h, total19h, total20h, total21h, total22h, total23h)
+        console.log(totalParHeure)
     
         
         
-        /*new Chart(graphParHeure, {
-            type: "bar",
+        new Chart(graphParHeure, {
+            type: "line",
             data: {
                 labels: heures,
                 datasets: [{
                     label: 'Nombre de passages de vélos par heure',
                     data: totalParHeure,
-                    borderWidth: 1
+                    borderColor: 'orange',
+                    fill: true,
+                    backgroundColor: 'violet',
+                    tension: 0.4
                 }]
             },
             
             options: {
+                responsive: true,
                 scales:{
                     y: {
                         beginAtZero: true 
                     }
                 }
             }
-        })*/
+        })
 
 
     })
