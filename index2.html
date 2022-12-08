@@ -3,43 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="style2.css"/>
-    <!-- intégration de la map -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
     crossorigin=""></script>
-    <!-- intégration source ChartJS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <title>Les vélos à Naoned</title>
+    <link rel="stylesheet" href="style2.css">
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre ExtraBold&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abyssinica+SIL&display=swap" rel="stylesheet">
+    <title>Vélos à Nantes</title>
 </head>
 <body>
-    <section> 
-        <div id="map"></div>
-    </section>
 
-    <section>
-        <div>
-            <!-- balise de graph -->
-            <canvas id="myChart"></canvas>
+    <!--home-->
+    <header class="home">
+        <a href="#" class="logo"><img src="./images/logo.png"></a>
+        <div class="resp">
+            <h1>Vélos à Nantes</h1>
+            <div  class="header_orange_line"></div>
+            <p><br></p>
+            <p>42 000 passages de vélos sont comptés en moyenne chaque jour à Nantes. Ces passages sont décomptés grâce à une cinquantaine de bornes, disséminées dans les rues de la ville et aux alentours. Grâce à elles, nous pouvons obtenir une image précise des habitudes des Nantais qui se déplacent à bicyclette, pour le travail ou les loisirs.</p>
         </div>
-    </section>
+        <button class="arrow" onclick="window.location.href='#build'"><img src="./images/scroll_arrow.png"></button>
+        
+    </header>
+    <!--home-->
 
-    <section>
-        <div>
+    <!--build-->
+    
+    <section class="build" id="build">
+
+        <div class=map>
+            <div id="map"></div>
+        </div>
+
+        <div class=bornes_max>
+            <p class="text_bornes_max">Bornes les plus passagères</p>
             <canvas id="myChart2"></canvas>
         </div>
-    </section>
-    <section>
-        <div>
+
+        <div class=count_velos_heure_jour>
+            <p class="text_velos_heure_jour">Nombre de vélos comptés par heure de la journée</p>
             <canvas id="myChart3"></canvas>
         </div>
+
+        <div class=bloc_analyse>
+            <h3 class="texte">Analyse des données</h3>
+            <br>
+            <p>La carte ci-dessus affiche toutes les bornes de comptage de passages de vélos à Nantes Métropole. Les marqueurs orange indiquent les bornes qui comptent plus de 100 passages de vélos par heure de la journée. Ici se dessine un axe Nord-Sud qui relie le centre-ville à la rive gauche de la Loire.<br><br>Ces bornes sont référencées en temps réel dans le graphique <em>"Bornes les plus passagères"</em>. Il est important de bien considérer les passages selon les horaires de la journée, ces derniers étant représentés dans le graphique <em>"Nombre de vélos comptés par heure de la journée"</em>. On constate en lisant ces données que les passages de vélos les plus nombreux sont comptés lors des heures de pointe, ce qui correspond aux trajets domicile-travail des Nantais.<br><br>Sources :<br>"Comptages vélo de Nantes Métropole - Nantes Métropole, 12/02/2020, sous licence ODbL."<br>"Comptages vélo de Nants Métropole - Boucles de comptage - Nantes Métropole, 19/11/2019, sous licence ouverte."</p>
+        </div>
+
+        <div class=photo></div>
+
     </section>
 
+    <!--build-->
+
+    <!--footer-->
+
+
+    <footer class="new_footer_area">
+        <div class="new_footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="f_widget company_widget wow fadeInLeft" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInLeft;">
+                                <p class="mchimp-errmessage" style="display: none;"></p>
+                                <p class="mchimp-sucmessage" style="display: none;"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer_bg">
+                <div class="footer_bg_one"></div>
+                <div class="footer_bg_two"></div>
+            </div>
+        </div>
+    </div>
+        <div class="footer_bottom">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-sm-7" style="text-align: center;">
+                        <p class="mb-0 f_400" style="color:white; font-size: 10px;">© cakecounter Inc.. 2019 All rights reserved.</p>
+                    </div>
+                    <div class="col-lg-6 col-sm-5 text-right" style="font-weight: bold; font-size: 24px; justify-content: center; text-align: center; ">
+                        <p> Justine Rougeulle - Imane Zaki - Gaëtan Sourisse </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+ 
+    <!--footer-->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script2.js"></script>
 </body>
 </html>

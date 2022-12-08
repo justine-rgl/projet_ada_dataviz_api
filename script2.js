@@ -7,15 +7,25 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// création icone verte
-var greenIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+// création icone grise
+var greyIcon = new L.Icon({
+    iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-2x-grey.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
-  });
+});
+
+// création icone verte
+var orangeIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
 
 const globalCounter = [];
 
@@ -37,54 +47,23 @@ fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=24440040
         
         // place les pins sur la map
         for (i=0 ; i<long.length ; i++) {
-            let markers = L.marker([long[i], lat[i]]).addTo(map);
-            markers.bindPopup(data.records[i].fields.libelle).openPopup();
+            let markers = L.marker([long[i], lat[i]], {icon: greyIcon}).addTo(map);
+            markers.bindPopup(data.records[i].fields.libelle);//.openPopup();
         }
         bikeCount()
     })
 
 // lien avec html pour emplacement graph
-const ctx = document.getElementById('myChart');
 const graph = document.getElementById('myChart2');
 const graphParHeure = document.getElementById('myChart3');
 
-// récup API nombr passages / tranfo des réponses en json / récupération data dans des tableaux vides
+// récup API nombre passages / tranfo des réponses en json / récupération data dans des tableaux vides
 // boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
 function bikeCount(){
     fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&rows=100&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b&apikey=c029c3d658c1b2b76334997b7cf8798eb391e6f966c87274ad981057")
         .then((resp) => resp.json())
         .then(data => {
         console.log(data)
-        /*const years=[]
-        const count=[]       
-        for (i=0 ; i<data.facet_groups[2].facets.length ; i++) {
-            years.push(data['facet_groups'][2]['facets'][i]['name'])
-            count.push(data['facet_groups'][2]['facets'][i]['count'])
-        }
-
-        // paramétrage du graph
-        new Chart(ctx, {
-            // choix du type de graph
-            type: 'bar',
-            // récupération des data à intégrer (abscisse, ordonnée, données des tableaux "years" et "count", etc.)
-            data: {
-                labels: years,
-                datasets: [{
-                    label: 'Nombre de passages de vélos',
-                    data: count,
-                    borderWidth: 1
-                }]
-            },
-            // paramétrage des options du tableau
-            options: {
-                scales:{
-                    // y pour barres verticales ; x pour barres horizontales
-                    y: {
-                        beginAtZero: true 
-                    }
-                }
-            }
-        })*/
         
         const counterName = [];
         const countPerDay = [];
@@ -96,8 +75,8 @@ function bikeCount(){
 
             }
         }
-        //console.log(counterName)
-        //console.log(countPerDay)
+        console.log(counterName)
+        console.log(countPerDay)
         
         new Chart(graph, {
             type: 'bar',
@@ -106,8 +85,9 @@ function bikeCount(){
                 datasets:[{
                     label:'Nombre de passages de vélo par compteur et par jour',
                     data: countPerDay,
-                    borderWidth: 1,
-                    backgroundColor: 'red'
+                    borderColor: ['rgb(255, 92, 0)'],
+                    borderWidth: 2,
+                    backgroundColor: ['rgb(255, 92, 0, 0.3)']
                 }]
             },
             options:{
@@ -118,13 +98,9 @@ function bikeCount(){
         const longMostCounter = [];
         const latMostCounter = [];
         const counterLibelle = [];
-        //console.log(globalCounter)
         for (i=0 ; i<counterName.length; i++){
-            //console.log(counterName[i])
             for (j=0 ; j<globalCounter.length; j++){ 
-                //console.log(globalCounter[j].libelle)   
                 if (counterName[i] == globalCounter[j].libelle){
-                    //console.log(counterName[i] + '=' + globalCounter[j].libelle)
                     longMostCounter.push(globalCounter[j].geolocalisation[0])
                     latMostCounter.push(globalCounter[j].geolocalisation[1])
                     counterLibelle.push(globalCounter[j].libelle)
@@ -132,14 +108,12 @@ function bikeCount(){
             
             }
         }
-        //console.log(longMostCounter[0])
-        //console.log(latMostCounter)
+ 
         for (i=0 ; i<longMostCounter.length ; i++) {
-            L.marker([longMostCounter[i], latMostCounter[i]], {icon: greenIcon}).addTo(map).bindPopup(counterLibelle[i]).openPopup();
-            //L.marker([47.2083580489973, -1.5497189172153978], {icon: greenIcon}).addTo(map).bindPopup("Pont Audibert vers Sud").openPopup();
+            L.marker([longMostCounter[i], latMostCounter[i]], {icon: orangeIcon}).addTo(map).bindPopup(counterLibelle[i]);//.openPopup();
         }
 
-        // création graphe passage vélo par heure
+        // création graph passage vélo par heure
         const heures = ["0h-1h", "1h-2h", "2h-3h", "3h-4h", "4h-5h", "5h-6h", "6h-7h", "7h-8h", "8h-9h", "9h-10h", "10h-11h", "11H-12h", "12h-13h", "13h-14h", "14h-15h", "15h-16h", "16h-17h", "17h-18h", "18h-19h", "19h-20h", "20h-21h", "21h-22h", "22h-23h", "23h-0h"]
         const totalParHeure = [];
 
@@ -208,9 +182,9 @@ function bikeCount(){
                 datasets: [{
                     label: 'Nombre de passages de vélos par heure',
                     data: totalParHeure,
-                    borderColor: 'orange',
+                    borderColor: ['rgb(143, 0, 255)'],
                     fill: true,
-                    backgroundColor: 'violet',
+                    backgroundColor: ['rgb(143, 0, 255, 0.2)'],
                     tension: 0.4
                 }]
             },
@@ -224,7 +198,6 @@ function bikeCount(){
                 }
             }
         })
-
 
     })
 }
