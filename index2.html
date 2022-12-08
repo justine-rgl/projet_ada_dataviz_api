@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-    crossorigin=""/>
+    crossorigin=""/> <!-- intégration de la map css -->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""></script>
+    crossorigin=""></script> <!-- intégration de la map script -->
     <link rel="stylesheet" href="style2.css">
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre ExtraBold&display=swap" rel="stylesheet">
@@ -33,38 +33,34 @@
     <!--home-->
 
     <!--build-->
-    
     <section class="build" id="build">
 
-        <div class=map>
+        <div class="map">
             <div id="map"></div>
         </div>
 
-        <div class=bornes_max>
+        <div class="bornes_max">
             <p class="text_bornes_max">Bornes les plus passagères</p>
             <canvas id="myChart2"></canvas>
         </div>
 
-        <div class=count_velos_heure_jour>
+        <div class="count_velos_heure_jour">
             <p class="text_velos_heure_jour">Nombre de vélos comptés par heure de la journée</p>
             <canvas id="myChart3"></canvas>
         </div>
 
-        <div class=bloc_analyse>
+        <div class="bloc_analyse">
             <h3 class="texte">Analyse des données</h3>
             <br>
             <p>La carte ci-dessus affiche toutes les bornes de comptage de passages de vélos à Nantes Métropole. Les marqueurs orange indiquent les bornes qui comptent plus de 100 passages de vélos par heure de la journée. Ici se dessine un axe Nord-Sud qui relie le centre-ville à la rive gauche de la Loire.<br><br>Ces bornes sont référencées en temps réel dans le graphique <em>"Bornes les plus passagères"</em>. Il est important de bien considérer les passages selon les horaires de la journée, ces derniers étant représentés dans le graphique <em>"Nombre de vélos comptés par heure de la journée"</em>. On constate en lisant ces données que les passages de vélos les plus nombreux sont comptés lors des heures de pointe, ce qui correspond aux trajets domicile-travail des Nantais.<br><br>Sources :<br>"Comptages vélo de Nantes Métropole - Nantes Métropole, 12/02/2020, sous licence ODbL."<br>"Comptages vélo de Nants Métropole - Boucles de comptage - Nantes Métropole, 19/11/2019, sous licence ouverte."</p>
         </div>
 
-        <div class=photo></div>
+        <div class="photo"></div>
 
     </section>
-
     <!--build-->
 
     <!--footer-->
-
-
     <footer class="new_footer_area">
         <div class="new_footer_top">
             <div class="container">
@@ -99,7 +95,8 @@
  
     <!--footer-->
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- on appelle les scripts à la fin du body -->
     <script src="script2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

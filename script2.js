@@ -1,3 +1,7 @@
+// lien avec html pour emplacement graphs
+const graph = document.getElementById('myChart2');
+const graphParHeure = document.getElementById('myChart3');
+
 // paramétrage localisation map + zoom initial
 const map = L.map('map').setView([47.218, -1.553], 13);
 
@@ -17,7 +21,7 @@ var greyIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-// création icone verte
+// création icone orange
 var orangeIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -27,10 +31,10 @@ var orangeIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
+// tableau vide pour récupérer toutes les données des compteurs
 const globalCounter = [];
 
-// récup API bornes / tranfo des réponses en json / récupération data dans des tableaux vides
-// boucle pour récupérer les coordonnées des pins / push data dans les tableaux vides en suivant le path d'accès
+// récup API bornes pour map / tranfo des réponses en json / récupération data dans des tableaux vides
 fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole-boucles-comptage&q=&rows=100&sort=boucle_num&facet=boucle_num&facet=libelle&apikey=c029c3d658c1b2b76334997b7cf8798eb391e6f966c87274ad981057")
     .then((resp) => resp.json())
     .then(data => {
@@ -39,6 +43,7 @@ fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=24440040
         const lat = [];
         ;
         
+        // boucle pour récupérer les coordonnées des pins / push data dans les tableaux vides en suivant le path d'accès
         for (i=0 ; i<data['records'].length ; i++) {
             long.push(data['records'][i]['fields']['geolocalisation'][0])
             lat.push(data['records'][i]['fields']['geolocalisation'][1])
@@ -50,15 +55,11 @@ fetch ("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=24440040
             let markers = L.marker([long[i], lat[i]], {icon: greyIcon}).addTo(map);
             markers.bindPopup(data.records[i].fields.libelle);//.openPopup();
         }
+        // on appelle la fonction du 2e fetch à l'intérieur du 1er pour pouvoir réutiliser ensuite les data globalCounter
         bikeCount()
     })
 
-// lien avec html pour emplacement graph
-const graph = document.getElementById('myChart2');
-const graphParHeure = document.getElementById('myChart3');
-
-// récup API nombre passages / tranfo des réponses en json / récupération data dans des tableaux vides
-// boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
+// récup API nombre passages (à l'intérieur d'une fonction) / tranfo des réponses en json / récupération data dans des tableaux vides
 function bikeCount(){
     fetch("https://data.nantesmetropole.fr/api/records/1.0/search/?dataset=244400404_comptages-velo-nantes-metropole&q=&rows=100&sort=jour&facet=boucle_num&facet=libelle&facet=jour&facet=probabilite_presence_anomalie&facet=jour_de_la_semaine&facet=boucle_libelle&facet=vacances_zone_b&apikey=c029c3d658c1b2b76334997b7cf8798eb391e6f966c87274ad981057")
         .then((resp) => resp.json())
@@ -68,6 +69,7 @@ function bikeCount(){
         const counterName = [];
         const countPerDay = [];
 
+        // boucle pour récupérer le nombre de passages / push data dans les tableaux vides en suivant le path d'accès
         for (i=0; i<data.records.length; i++ ){
             if(data['records'][i]['fields']['total'] >= 2300){
                 counterName.push(data['records'][i]['fields']['libelle']);
@@ -83,7 +85,7 @@ function bikeCount(){
             data: {
                 labels: counterName,
                 datasets:[{
-                    label:'Nombre de passages de vélo par compteur et par jour',
+                    label:'Nombre de passages de vélos par compteur et par jour',
                     data: countPerDay,
                     borderColor: ['rgb(255, 92, 0)'],
                     borderWidth: 2,
@@ -91,10 +93,12 @@ function bikeCount(){
                 }]
             },
             options:{
-                indexAxis: 'y'
+                indexAxis: 'y' // pour que les barres soient horizontales
             }
 
         })
+
+        // pour obtenir les longitude/latitude/libellé des compteurs qui ont plus de 2300 passages
         const longMostCounter = [];
         const latMostCounter = [];
         const counterLibelle = [];
@@ -109,11 +113,12 @@ function bikeCount(){
             }
         }
  
+        // boucle pour changer la couleur des marqueurs pour les compteurs récupérés ci-dessus
         for (i=0 ; i<longMostCounter.length ; i++) {
             L.marker([longMostCounter[i], latMostCounter[i]], {icon: orangeIcon}).addTo(map).bindPopup(counterLibelle[i]);//.openPopup();
         }
 
-        // création graph passage vélo par heure
+        // création graph passages vélos par heure
         const heures = ["0h-1h", "1h-2h", "2h-3h", "3h-4h", "4h-5h", "5h-6h", "6h-7h", "7h-8h", "8h-9h", "9h-10h", "10h-11h", "11H-12h", "12h-13h", "13h-14h", "14h-15h", "15h-16h", "16h-17h", "17h-18h", "18h-19h", "19h-20h", "20h-21h", "21h-22h", "22h-23h", "23h-0h"]
         const totalParHeure = [];
 
@@ -142,6 +147,7 @@ function bikeCount(){
         let total22h = 0
         let total23h = 0      
         
+        // boucle pour récupérer le nombre de passages par heure / avec condition != undefined pour récupérer seulement le total des heures et éviter les NaN
         for (i=0 ; i< data.records.length ; i++){
             if (data['records'][i]['fields']['00', '01', '02','03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] != undefined){
                 total0h += data['records'][i]['fields']['00'] 
@@ -173,7 +179,6 @@ function bikeCount(){
         totalParHeure.push(total0h, total1h, total2h, total3h, total4h, total5h, total6h, total7h, total8h, total9h, total10h, total11h, total12h, total13h, total14h, total15h, total16h, total17h, total18h, total19h, total20h, total21h, total22h, total23h)
         console.log(totalParHeure)
     
-        
         
         new Chart(graphParHeure, {
             type: "line",
